@@ -37,6 +37,10 @@ class SearchCard extends ct.LitElement {
     if (!this.config.max_results) {
       this.config.max_results = 10;
     }
+    
+    if (!this.config.attribute) {
+      this.config.attribute = "friendly_name";
+    }
 
     this.config.actions = BUILTIN_ACTIONS.concat(this.config.actions || []);
   }
@@ -124,8 +128,8 @@ class SearchCard extends ct.LitElement {
         if (
             (entity_id.search(searchRegex) >= 0) ||
             (
-              "friendly_name" in this.hass.states[entity_id].attributes &&
-              this.hass.states[entity_id].attributes.friendly_name.search(searchRegex) >= 0
+              this.config.attribute in this.hass.states[entity_id].attributes &&
+              this.hass.states[entity_id].attributes[this.config.attribute].search(searchRegex) >= 0
             )
           ) {
           this.results.push(entity_id);
